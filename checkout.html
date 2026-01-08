@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkout — Kuku Yetu</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        async function payWithMpesa(event) {
+            event.preventDefault();
+            const location = document.getElementById('location').value.trim();
+            if (!location) { alert('Please enter a delivery location'); return; }
+
+            // prompt for phone and PIN
+            let phone = prompt('Enter your phone number (e.g. 0712345678)');
+            if (!phone) { return; }
+            let pin = prompt('Enter your M-Pesa PIN');
+            if (!pin) { return; }
+
+            // show spinner and disable button
+            const payBtn = document.getElementById('payBtn');
+            payBtn.disabled = true;
+            const originalText = payBtn.textContent;
+            payBtn.textContent = 'Processing...';
+
+            // send to server to initiate STK Push
+            const res = await fetch('/pay/mpesa/stk', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: phone, location: location })
+            });
+            const data = await res.json();
+            // restore button state
+            payBtn.disabled = false;
+            payBtn.textContent = originalText;
+            const banner = document.getElementById('banner');
+            banner.style.display = 'block';
+            banner.textContent = data.message || (data.success ? 'Payment successful' : 'Payment failed');
+            banner.style.background = data.success ? '#ecfccb' : '#fee2e2';
+            banner.style.color = data.success ? '#166534' : '#991b1b';
+            if (data.success) {
+                // redirect to home after a moment
+                setTimeout(() => window.location = '/', 1500);
+            }
+        }
+        // Try to auto-fill delivery location using browser geolocation
+        window.addEventListener('load', function () {
+            try {
+                if (navigator && navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (pos) {
+                        var lat = pos.coords.latitude.toFixed(6);
+                        var lon = pos.coords.longitude.toFixed(6);
+                        var el = document.getElementById('location');
+                        if (el && !el.value) {
+                            el.value = lat + ',' + lon;
+                        }
+                    }, function (err) {
+                        // ignore permission denial or errors
+                    }, { enableHighAccuracy: true, timeout: 5000 });
+                }
+            } catch (e) { }
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Checkout</h1>
+        <div id="banner" style="display:none;padding:10px;border-radius:8px;margin-bottom:12px"></div>
+
+        <div class="card">
+            <h3>Delivery</h3>
+            <label>Delivery address</label>
+            <input id="location" class="input" type="text" placeholder="Enter delivery address or allow location" />
+            <p style="color:var(--muted);font-size:13px">You can also allow browser location when prompted.</p>
+
+            <h3>Payment</h3>
+            <p>
+                <label><input type="radio" name="pm" value="mpesa" checked /> Pay with M-Pesa</label>
+            </p>
+
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+                <a class="btn outline" href="/cart">Back to cart</a>
+                <button id="payBtn" class="btn primary" onclick="payWithMpesa(event)">Pay with M-Pesa</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

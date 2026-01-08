@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register — Kuku Yetu</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#f97316">
+</head>
+
+<body>
+    <main class="container centered">
+        <form class="card form-card" method="post" action="{{ url_for('register') }}">
+            <h2>Create Account</h2>
+            <div style="text-align:center;margin-bottom:12px">
+                <img src="/static/logo.jpg" alt="register logo"
+                    style="height:96px;width:96px;border-radius:18px;object-fit:cover;display:block;margin:0 auto 8px" />
+            </div>
+            <input class="input" name="email" type="email" placeholder="Email" required />
+            <input class="input" name="phone" type="text" placeholder="Phone (optional)" />
+            <input class="input" name="password" type="password" placeholder="Password" required />
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+                <a class="btn outline" href="/">Cancel</a>
+                <button class="btn primary" type="submit">Create account</button>
+            </div>
+        </form>
+    </main>
+</body>
+
+</html>

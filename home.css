@@ -1,0 +1,170 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+
+}
+
+body {
+  background-color: yellow;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+}
+
+s.container {
+  padding: 0 15px;
+  min-height: 100vh;
+  justify-content: center;
+
+}
+
+.kuku yetu-page {
+  justify-content: space-between;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.kuku yetu -page {
+  margin-bottom: 90px;
+}
+
+h1 {
+
+  color: black;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  margin_bottom: 10opx;
+}
+
+.kuku yetu-page p {
+  font-size: 1.75rem;
+  margin-bottom: 10 px;
+  white-space-collapse: nowrap;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px rgba(0, 0, 0, 0.1)0 8px 16px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+form input {
+  height: 55px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  padding: 0 14px;
+}
+
+form input:focus {
+  outline: none;
+  border-color: #1877f2;
+}
+
+::placeholder {
+  color: #777;
+  font-size: 1.063rem;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 15px;
+
+}
+
+.link.login {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: orange;
+  padding: 15px 0;
+  border-radius: 6px;
+  color: orange;
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+
+.link .login:hover {
+  background: orange;
+}
+
+.link .forgot {
+  color: #1877f2;
+  font-size: 0.875rem;
+}
+
+.link -forgot:hover {
+  text-direction: underline;
+}
+
+
+
+.button {
+  margin-top: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+
+}
+
+a {
+  text-decoration: none;
+
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+#submitBtn {
+  border: none;
+  background-color: rgb(56, 98, 235);
+}
+
+.create {
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+
+}
+
+#createBtn {
+  font-weight: 600;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  background-color: rgb(7, 238, 19);
+  max-height: 70px;
+  height: 30px;
+  max-width: 200px;
+  width: 150px;
+
+
+
+
+}
+
+#createBtn :hover {
+  cursor: pointer;
+  justify-self: center;
+  justify-content: center;
+}

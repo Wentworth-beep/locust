@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kuku Yetu</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#f97316">
+    <style>
+        body {
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="top-header">
+        <div class="container header-row">
+            <div class="brand">Kuku Yetu</div>
+            {% if user_balance is not none %}
+            <div style="margin-left:12px;color:var(--muted);font-weight:600">Balance: Ksh {{ '%.2f'|format(user_balance)
+                }}</div>
+            {% endif %}
+            <div class="search-bar">
+                <input class="search-input" type="text" placeholder="Search on Kuku Yetu">
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+                {% if session.get('user_id') %}
+                <a href="/profile" class="btn outline">Profile</a>
+                <a href="/logout" class="btn outline">Logout</a>
+                {% else %}
+                <a href="/home" class="btn outline">Login / Register</a>
+                {% endif %}
+                <div class="call-wrap">
+                    <a href="tel:254112402377" role="button" class="call-button">Call 0112402377</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Floating WhatsApp chat -->
+    <a class="whatsapp-float" href="https://wa.me/254112402377" target="_blank" rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp">
+        <img src="/static/whatsapp.png" alt="WhatsApp" style="height:28px;width:28px" />
+    </a>
+
+    <main class="content container">
+        <section class="main-banner">
+            <h1>Fresh Chickens • Daily</h1>
+            <p>Quality you can trust — delivered to your door.</p>
+            <a class="btn primary" href="#">Shop Now</a>
+        </section>
+
+        <section class="flash-sales">
+            <h2>🔥 Hot Sales with kuku_yetu</h2>
+            <div class="cards">
+                {% if products and products|length > 0 %}
+                {% for p in products %}
+                <div class="card">
+                    {% if p.image %}
+                    <img src="/static/uploads/{{ p.image }}"
+                        style="width:50%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px" />
+                    {% endif %}
+                    <div style="font-weight:700">{{ p.name }}</div>
+                    <div style="color:var(--muted);margin-bottom:8px">Ksh {{ p.price }}</div>
+                    <div style="margin-bottom:10px">{{ p.description }}</div>
+                    {% if p.stock and p.stock|int > 0 %}
+                    <form method="post" action="{{ url_for('cart_add', prod_id=p.id) }}">
+                        <input type="number" name="qty" value="1" min="1" max="{{ p.stock }}"
+                            style="width:72px;margin-right:8px" />
+                        <button class="btn primary" type="submit">Add to cart</button>
+                    </form>
+                    {% else %}
+                    <div style="color:#dc2626;font-weight:600">Out of stock</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="card">No products available.</div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <span class="nav-emoji">🏠</span>
+            <span class="nav-label">Home</span>
+        </a>
+        <a href="{{ url_for('cart_view') }}" class="nav-item">
+            <span class="nav-emoji">🛒</span>
+            <span class="nav-label">Cart</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-emoji">👤</span>
+            <span class="nav-label">Account</span>
+        </a>
+    </nav>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/static/sw.js').catch(() => { });
+        }
+    </script>
+</body>
+
+</html>

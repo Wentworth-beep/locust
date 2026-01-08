@@ -1,0 +1,136 @@
+< !DOCTYPE html >
+    <html lang="en">
+
+        <head>
+            <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <title>Admin — Orders</title>
+                    <link rel="stylesheet" href="/static/css/style.css">
+                        <style>
+                            .order-card {
+                                margin - bottom: 12px;
+                            padding: 12px;
+                            border-radius: 8px;
+                            background: #fff;
+                            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04)
+        }
+
+                            .order-items {
+                                font - family: monospace
+        }
+                        </style>
+                    </head>
+
+                    <body>
+                        <div class="container">
+                            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                                <div>
+                                    <h1>Orders</h1>
+                                    <p class="lead">Recent orders placed through checkout.</p>
+                                </div>
+                                <div style="display:flex;gap:8px;align-items:center">
+                                    <form method="get" action="{{ url_for('admin_orders') }}"
+                                        style="display:flex;gap:8px;align-items:center">
+                                        <input name="q" placeholder="Search orders or item" value="{{ q }}" class="input" />
+                                        <input name="from_date" type="date" value="{{ from_date }}" class="input" />
+                                        <input name="to_date" type="date" value="{{ to_date }}" class="input" />
+                                        <button class="btn outline" type="submit">Search</button>
+                                    </form>
+                                    <a href="{{ url_for('admin_orders_export', q=q, from_date=from_date, to_date=to_date) }}"
+                                        class="btn">Export CSV</a>
+                                    <a href="{{ url_for('admin') }}" class="btn outline">Back</a>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:16px">
+                                {% if orders|length == 0 %}
+                                <div class="order-card">No orders found.</div>
+                                {% else %}
+                                {% for o in orders %}
+                                <div class="order-card">
+                                    <div style="display:flex;justify-content:space-between;align-items:center">
+                                        <div>
+                                            <div style="font-weight:700">Order #{{ o.id }}</div>
+                                            <div style="color:var(--muted)">Placed: {{ o.created_at }}</div>
+                                        </div>
+                                        <div style="text-align:right">
+                                            <div style="font-weight:700">Total: Ksh {{ '%.2f'| format(o.total) }}</div>
+                                            <div style="margin-top:6px">
+                                                <span style="font-size:13px;color:var(--muted)">Payment:</span>
+                                                <span style="font-weight:700;margin-left:6px">{{
+                                                    o.payment.method if o.payment else '—'
+                                                }}</span>
+                                            </div>
+                                            <div style="margin-top:6px">
+                                                <span style="font-size:13px;color:var(--muted)">Status:</span>
+                                                {% if o.paid %}
+                                                <span style="color:#166534;font-weight:700;margin-left:6px">Paid</span>
+                                                {% else %}
+                                                <span style="color:#b45309;font-weight:700;margin-left:6px">{{
+                                                    o.payment.status if o.payment
+                                else 'unknown'
+                                                }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <div style="margin-top:6px">
+                                                <span style="font-size:13px;color:var(--muted)">Phone:</span>
+                                                <span style="margin-left:6px">{{ o.payment.phone if o.payment else '—' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top:12px">
+                                        <div style="font-weight:600">Items</div>
+                                        <div class="order-items">
+                                            {% for it in o.items %}
+                                            <div>{{ it.qty }} × {{ it.name }} — Ksh {{ '%.2f'| format(it.subtotal) }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div
+                                style="display:flex;justify-content:center;margin-top:16px;gap:8px;align-items:center;flex-direction:column">
+                                {% if total_count is defined %}
+                                <div style="color:var(--muted);margin-bottom:8px">Showing page {{ page }} of {{ total_pages }} ({{
+                                    total_count
+                                }} total)</div>
+                                {% endif %}
+                                <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
+                                    {% set start = page - 3 if page > 4 else 1 %}
+                                    {% set end = page + 3 if page + 3 < total_pages else total_pages %} {% if start> 1 %}
+                                    <a class="btn outline"
+                                        href="{{ url_for('admin_orders', q=q, from_date=from_date, to_date=to_date, page=1, page_size=page_size) }}">1</a>
+                                    {% if start > 2 %}
+                                    <span style="padding:8px 10px;color:var(--muted)">…</span>
+                                    {% endif %}
+                                    {% endif %}
+
+                                    {% for pnum in range(start, end+1) %}
+                                    {% if pnum == page %}
+                                    <span class="btn" style="font-weight:700">{{ pnum }}</span>
+                                    {% else %}
+                                    <a class="btn outline"
+                                        href="{{ url_for('admin_orders', q=q, from_date=from_date, to_date=to_date, page=pnum, page_size=page_size) }}">{{
+                                            pnum
+                                        }}</a>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                    {% if end < total_pages %} {% if end < total_pages - 1 %} <span
+                                        style="padding:8px 10px;color:var(--muted)">…</span>
+                                    {% endif %}
+                                    <a class="btn outline"
+                                        href="{{ url_for('admin_orders', q=q, from_date=from_date, to_date=to_date, page=total_pages, page_size=page_size) }}">{{
+                                            total_pages
+                                        }}</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </body>
+
+                </html>

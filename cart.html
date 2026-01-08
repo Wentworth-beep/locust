@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        body {
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Your Cart🛒</h1>
+        <div class="card">
+            {% if items|length == 0 %}
+            <p>Your cart is empty.</p>
+            {% else %}
+            <table style="width:100%;border-collapse:collapse">
+                <thead>
+                    <tr style="text-align:left;border-bottom:1px solid #eee">
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for it in items %}
+                    <tr>
+                        <td style="padding:8px 0">{{ it.product.name }}</td>
+                        <td>
+                            <div style="display:flex;gap:6px;align-items:center">
+                                <form method="post" action="{{ url_for('cart_dec', prod_id=it.product.id) }}"
+                                    style="display:inline">
+                                    <button class="btn outline" type="submit">−</button>
+                                </form>
+                                <div style="min-width:36px;text-align:center">{{ it.qty }}</div>
+                                <form method="post" action="{{ url_for('cart_inc', prod_id=it.product.id) }}"
+                                    style="display:inline">
+                                    <button class="btn outline" type="submit">+</button>
+                                </form>
+                                <form method="post" action="{{ url_for('cart_update', prod_id=it.product.id) }}"
+                                    style="display:inline;margin-left:6px">
+                                    <input type="number" name="qty" value="{{ it.qty }}" min="0"
+                                        max="{{ it.product.stock or 0 }}" style="width:72px" />
+                                    <button class="btn outline" type="submit">Update</button>
+                                </form>
+                            </div>
+                        </td>
+                        <td>Ksh {{ '%.2f'|format(it.subtotal) }}</td>
+                        <td>
+                            <form method="post" action="{{ url_for('cart_remove', prod_id=it.product.id) }}">
+                                <button class="btn outline" type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-weight:700">
+                <div>Total: Ksh {{ '%.2f'|format(total) }}</div>
+                <div>
+                    <form action="/checkout/now" method="post" style="display:inline">
+                        <button class="btn primary" type="submit">Checkout — Ksh {{ '%.2f'|format(total) }}</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>
+
+<a class="whatsapp-float" href="https://wa.me/254112402377" target="_blank" rel="noopener noreferrer"
+    aria-label="Chat on WhatsApp">
+    <img src="/static/whatsapp.png" alt="WhatsApp" style="height:28px;width:28px" />
+</a>

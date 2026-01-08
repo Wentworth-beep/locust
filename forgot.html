@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forgot password</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Forgot password</h1>
+        <div class="card">
+            <p>Enter the email address associated with your account. We'll send a password reset link.</p>
+            <form method="post" action="/forgot">
+                <label>Email</label>
+                <input class="input" type="email" name="email" required />
+                <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+                    <a class="btn outline" href="/">Cancel</a>
+                    <button class="btn primary" type="submit">Send reset link</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

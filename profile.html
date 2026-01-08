@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Account — Kuku Yetu</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .orders-list {
+            margin-top: 12px
+        }
+
+        .order-card {
+            margin-bottom: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            background: yellowgreen;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+                <h1>My Account</h1>
+                <p class="lead">Manage your account and view recent orders.</p>
+            </div>
+            <div>
+                <a href="/" class="btn outline">Home</a>
+                <a href="/logout" class="btn outline">Logout</a>
+            </div>
+        </div>
+
+        <div style="margin-top:16px">
+            <div class="card">
+                <h3>Profile</h3>
+                <div><strong>Email:</strong> {{ user.email }}</div>
+                <div><strong>Phone:</strong> {{ user.phone or '—' }}</div>
+                <div><strong>Balance:</strong> Ksh {{ '%.2f'|format(user.balance or 0) }}</div>
+            </div>
+
+            <div class="orders-list">
+                <h3>Recent Orders</h3>
+                {% if orders|length == 0 %}
+                <div class="order-card">No orders found.</div>
+                {% else %}
+                {% for o in orders %}
+                <div class="order-card">
+                    <div style="display:flex;justify-content:space-between">
+                        <div><strong>Order #{{ o.id }}</strong>
+                            <div style="color:var(--muted)">Placed: {{ o.created_at }}</div>
+                        </div>
+                        <div style="font-weight:700">Ksh {{ '%.2f'|format(o.total) }}</div>
+                    </div>
+                    <div style="margin-top:8px">
+                        {% for it in o.items %}
+                        <div>{{ it.qty }} × {{ it.name }} — Ksh {{ '%.2f'|format(it.price) }}</div>
+                        {% endfor %}
+                    </div>
+                    <div style="margin-top:8px;color:var(--muted)">Payment: {{ o.payment.method if o.payment else '—' }}
+                        — Status: {{ 'Paid' if o.paid else (o.payment.status if o.payment else 'pending') }}</div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

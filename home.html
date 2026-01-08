@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome — Kuku Yetu</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#f97316">
+    <style>
+        body {
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container centered">
+        <div class="hero">
+            <img src="/static/logo.jpg" alt="Kuku Yetu logo" class="logo">
+            <h1 class="brand-title">Kuku Yetu</h1>
+            <p class="lead">Welcome to One‑Stop Kuku Yetu shop.</p>
+        </div>
+
+        <form class="card form-card" action="/login" method="post">
+            <h2>Login</h2>
+            <div style="text-align:center;margin-bottom:12px">
+                <img src="/static/logo.jpg" alt="login logo"
+                    style="height:96px;width:96px;border-radius:18px;object-fit:cover;display:block;margin:0 auto 8px" />
+            </div>
+            <label class="visually-hidden">Email or phone</label>
+            <input class="input" type="text" name="identifier" placeholder="Email or phone number" required>
+
+            <label class="visually-hidden">Password</label>
+            <input class="input" type="password" name="password" placeholder="Password" id="password" required>
+
+            <div class="form-row space-between">
+                <button type="submit" class="btn primary">Login</button>
+                <a class="link" href="/forgot">Forgot password?</a>
+            </div>
+
+            <hr>
+
+            <div class="form-row">
+                <a href="/register" class="btn outline">Create new account</a>
+            </div>
+        </form>
+    </main>
+
+    <a class="whatsapp-float" href="https://wa.me/0112402377" target="_blank" rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp">
+        <img src="/static/whatsapp.png" alt="WhatsApp" style="height:28px;width:28px" />
+    </a>
+
+</body>
+</head>
+
+</html>
