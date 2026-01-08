@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin — Call Log</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        body {
+            background-color: orange;
+        }
+
+        .log-list {
+            max-width: 900px;
+            margin: 24px auto;
+            padding: 12px
+        }
+
+        .log-item {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+            font-family: monospace
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <div>
+                <h1>Call Log</h1>
+                <p class="lead">Recent attempts recorded by the server (one per line).</p>
+            </div>
+            <div style="display:flex;gap:8px">
+                <a href="{{ url_for('admin_orders') }}" class="btn outline">Orders</a>
+                <a href="{{ url_for('admin_topup') }}" class="btn outline">Top Up</a>
+                <a href="{{ url_for('admin_logout') }}" class="btn outline">Logout</a>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start;margin-top:18px">
+            <div>
+                <div class="card log-list">
+                    <h2>Call Log</h2>
+                    {% if logs|length == 0 %}
+                    <div class="log-item">No log entries yet.</div>
+                    {% else %}
+                    {% for line in logs %}
+                    <div class="log-item">{{ line }}</div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <aside>
+                <div class="card form-card">
+                    <h2>Add Products😳</h2>
+                    <form method="post" action="{{ url_for('admin_upload') }}" enctype="multipart/form-data">
+                        <input class="input" name="name" placeholder="Product name" required />
+                        <input class="input" name="price" placeholder="Price" required />
+                        <input class="input" name="stock" placeholder="stock" required />
+                        <input class="input" name="description" placeholder="Short description" />
+                        <input class="input" type="file" name="image" accept="image/*" />
+                        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+                            <button class="btn primary" type="submit">Upload</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="margin-top:12px">
+                    <h3>Existing Products</h3>
+                    {% if products|length == 0 %}
+                    <div class="log-item">No products yet.</div>
+                    {% else %}
+                    {% for p in products %}
+                    <div class="card" style="display:flex;gap:12px;align-items:center;margin-bottom:8px">
+                        {% if p.image %}
+                        <img src="/static/uploads/{{ p.image }}"
+                            style="height:48px;width:48px;border-radius:6px;object-fit:cover" />
+                        {% endif %}
+                        <div style="flex:1">
+                            <div style="font-weight:600">{{ p.name }}</div>
+                            <div style="color:var(--muted)">Ksh {{ p.price }} • Stock: {{ p.stock or 0 }}</div>
+                        </div>
+                        <form method="post" action="{{ url_for('admin_delete', prod_id=p.id) }}"
+                            onsubmit="return confirm('Delete product?')">
+                            <button class="btn outline" type="submit">Delete</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </aside>
+        </div>
+    </div>
+</body>
+
+</html>

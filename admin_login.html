@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#f97316">
+    <style>
+        body {
+            background-color: orange;
+        }
+
+        .login-card {
+            max-width: 420px;
+            margin: 48px auto;
+            padding: 20px;
+            border-radius: 12px;
+            background: whitesmoke;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06)
+        }
+
+        .error {
+            color: #dc2626;
+            margin-bottom: 12px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-card">
+            <h2>Admin Login</h2>
+            <div style="text-align:center;margin-bottom:12px">
+                <img src="/static/logo.jpg" alt="admin logo"
+                    style="height:68px;width:68px;border-radius:12px;object-fit:cover;display:block;margin:0 auto 8px" />
+            </div>
+            {% with messages = get_flashed_messages(category_filter=['error']) %}
+            {% if messages %}
+            <div class="error">{{ messages[0] }}</div>
+            {% endif %}
+            {% endwith %}
+
+            <form method="post" action="{{ url_for('admin_login') }}">
+                <label class="visually-hidden">Password</label>
+                <input class="input" type="password" name="password" placeholder="Password" required>
+                <div style="margin-top:12px;display:flex;gap:10px;justify-content:flex-end">
+                    <a class="btn outline" href="/">Cancel</a>
+                    <button class="btn primary" type="submit">Sign in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
