@@ -1,0 +1,27 @@
+{
+    "name": "kuku-yetu",
+    "version": "1.0.0",
+    "description": "Kuku Yetu - Express port of the original Flask app",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "NODE_ENV=development node server.js"
+    },
+    "engines": {
+        "node": ">=14"
+    },
+    "dependencies": {
+        "axios": "^1.4.0",
+        "better-sqlite3": "^8.0.0",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.20.2",
+        "cookie-parser": "^1.4.6",
+        "express": "^4.18.2",
+        "express-session": "^1.17.3",
+        "multer": "^1.4.5-lts.1",
+        "nunjucks": "^3.2.4",
+        "nodemailer": "^6.9.3",
+        "twilio": "^4.12.0",
+        "uuid": "^9.0.0"
+    }
+}
